@@ -9,7 +9,6 @@ import java.util.Objects;
 
 public class Feedback {
     private String attempt;
-    private String wordToGuess;
     private List<Mark> marks;
 
     public Feedback(String attempt, List<Mark> marks) {
@@ -33,7 +32,7 @@ public class Feedback {
                 .anyMatch(Mark.INVALID::equals);
     }
 
-    public String giveHint(String previousHint, String wordToGuess) {
+    public String giveHint(String previousHint, String wordToGuess, List<Mark> marks) {
         StringBuilder result = new StringBuilder();
 
         // G R O E P
@@ -50,7 +49,20 @@ public class Feedback {
         return result.toString();
     }
 
-    @Override
+//    public String baseHint(String wordToGuess) {
+//        StringBuilder result = new StringBuilder();
+//
+//        result.append(wordToGuess.charAt(0));
+//        for (int i = 1; i < wordToGuess.length(); i++) {
+//            result.append(".");
+//        }
+//
+//        return result.toString();
+//    }
+
+
+
+        @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

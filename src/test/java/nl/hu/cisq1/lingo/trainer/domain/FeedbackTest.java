@@ -25,6 +25,18 @@ class FeedbackTest {
     }
 
     @Test
+    @DisplayName("word is guessed if all letters are correct")
+    void wordIsNotGuessed() {
+        String attempt = "groeb";
+        String wordToGuess = "groep";
+        List<Mark> marks = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.ABSENT);
+
+        Feedback feedback = new Feedback(attempt, marks );
+
+        assertTrue(!feedback.isWordGuessed());
+    }
+
+    @Test
     @DisplayName("attempt is invalid if a letter is marked invalid")
     void attemptIsInvalid() {
         String attempt = "groepen";
@@ -41,7 +53,7 @@ class FeedbackTest {
     void giveHint(String previousHint, String wordToGuess, String attempt, List<Mark> marks, String exptectedHint) {
         Feedback feedback = new Feedback(attempt, marks);
 
-        String nextHint = feedback.giveHint(previousHint, wordToGuess);
+        String nextHint = feedback.giveHint(previousHint, wordToGuess, marks);
 
         assertEquals(exptectedHint, nextHint);
 
