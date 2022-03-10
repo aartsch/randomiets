@@ -58,7 +58,25 @@ class RoundTest {
         String result = round.getHint();
 
         assertEquals("groe.", result);
+    }
 
+    @Test
+    @DisplayName("Check if the gamestate is correct per round")
+    void checkGameState() {
+        String wordToGuess = "groep";
+        String attempt = "groes";
+
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+        round.guessWord(attempt);
+        round.guessWord(attempt);
+        round.guessWord(attempt);
+        round.guessWord(attempt);
+
+        GameStatus result = round.getGameState();
+
+        assertEquals(GameStatus.LOST, result);
     }
 
 }

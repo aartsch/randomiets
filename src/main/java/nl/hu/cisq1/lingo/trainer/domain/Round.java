@@ -8,12 +8,14 @@ public class Round {
     private String wordToGuess;
     private int attemptsLeft;
     private String hint;
+    private GameStatus gameState;
     private List<Feedback> feedbacks = new ArrayList<>();
 
     public Round(String wordToGuess, int attemptsLeft) {
         this.wordToGuess = wordToGuess;
         this.attemptsLeft = attemptsLeft;
         this.hint = this.giveInitialHint(wordToGuess);
+        this.gameState = GameStatus.PLAYING;
     }
 
     public void guessWord(String attempt) {
@@ -24,18 +26,16 @@ public class Round {
 
         this.feedbacks.add(feedback);
 
-        int attemptsLeft = this.attemptsLeft;
-
         if(feedback.isAttemptInvalid()) {
             Feedback.invalid(attempt, this.wordToGuess);
-            attemptsLeft = attemptsLeft -1;
+            this.attemptsLeft = this.attemptsLeft -1;
         } else if (feedback.isWordGuessed()){
-//            this.gameState = GameStatus.ROUNDWON;
+            this.gameState = GameStatus.ROUNDWON;
         } else {
-            attemptsLeft = attemptsLeft -1;
+            this.attemptsLeft = this.attemptsLeft -1;
         }
         if (attemptsLeft == 0) {
-//            this.gameState = GameStatus.LOST;
+            this.gameState = GameStatus.LOST;
         }
 
         this.hint = feedback.giveHint(this.hint, this.wordToGuess, generateMarks(this.wordToGuess, attempt) );
@@ -78,5 +78,13 @@ public class Round {
 
     public List<Feedback> getFeedbacks() {
         return feedbacks;
+    }
+
+    public GameStatus getGameState() {
+        return gameState;
+    }
+
+    public int getAttemptsLeft() {
+        return attemptsLeft;
     }
 }
