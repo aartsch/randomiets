@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Round {
-    private int id;
+    private long id;
     private String wordToGuess;
     private int attemptsLeft;
     private GameStatus gameState;
