@@ -14,7 +14,6 @@ public class Game {
     public void startGame(String wordToGuess) {
         Round round = new Round(wordToGuess, 5);
 
-        round.startRound();
     }
 
     public int calculateScore(int score) {

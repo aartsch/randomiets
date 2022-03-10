@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class RoundTest {
     @Test
     @DisplayName("Start round returns correct hint")
-    void isRoundStarted() {
+    void isBaseHintCorrect() {
         String wordToGuess = "groep";
 
         Round round = new Round(wordToGuess, 5);
 
-        String startRound = round.startRound();
+        String startRound = round.getHint();
 
         assertEquals("g....", startRound);
     }
@@ -51,9 +51,11 @@ class RoundTest {
         String wordToGuess = "groep";
         String attempt = "groes";
 
-        Round round = new Round(wordToGuess, 5);
+        Round round = new Round(wordToGuess, 5 );
 
-        String result = round.guessWord(attempt);
+        round.guessWord(attempt);
+
+        String result = round.getHint();
 
         assertEquals("groe.", result);
 
