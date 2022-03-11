@@ -6,7 +6,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,4 +82,21 @@ class FeedbackTest {
 
         assertEquals(feedback1, feedback2);
     }
+
+    @Test
+    @DisplayName("hashcode is equal to other hashcode")
+    void testHashCode() {
+        String attempt = "woord";
+
+        List<Mark> marks1 = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT);
+        List<Mark> marks2 = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT);
+
+        Feedback feedback1  = new Feedback(attempt, marks1 );
+        Feedback feedback2  = new Feedback(attempt, marks2 );
+
+        Map<Feedback, String> map = new HashMap<>();
+        map.put(feedback1, "feedback");
+        assertEquals("feedback", map.get(feedback2));
+    }
+
 }

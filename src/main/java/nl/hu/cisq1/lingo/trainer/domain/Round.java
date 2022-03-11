@@ -8,14 +8,12 @@ public class Round {
     private String wordToGuess;
     private int attemptsLeft;
     private String hint;
-    private GameStatus gameState;
     private List<Feedback> feedbacks = new ArrayList<>();
 
     public Round(String wordToGuess, int attemptsLeft) {
         this.wordToGuess = wordToGuess;
         this.attemptsLeft = attemptsLeft;
         this.hint = this.giveInitialHint(wordToGuess);
-        this.gameState = GameStatus.PLAYING;
     }
 
     public void guessWord(String attempt) {
@@ -30,16 +28,35 @@ public class Round {
             Feedback.invalid(attempt, this.wordToGuess);
             this.attemptsLeft = this.attemptsLeft -1;
         } else if (feedback.isWordGuessed()){
-            this.gameState = GameStatus.ROUNDWON;
+
         } else {
             this.attemptsLeft = this.attemptsLeft -1;
-        }
-        if (attemptsLeft == 0) {
-            this.gameState = GameStatus.LOST;
         }
 
         this.hint = feedback.giveHint(this.hint, this.wordToGuess, generateMarks(this.wordToGuess, attempt) );
     }
+
+    public boolean isWordGuessed() {
+        if(this.attemptsLeft == 0) {
+            return false;
+        }
+
+        Feedback feedback = lastFeedback();
+
+        return feedback.isWordGuessed();
+
+    }
+
+    public boolean isGameOver() {
+        return (!isWordGuessed() && this.attemptsLeft == 0);
+    }
+
+    private Feedback lastFeedback() {
+        Feedback feedback = feedbacks.get(feedbacks.size()-1);
+
+        return feedback;
+    }
+
 
     public List<Mark> generateMarks(String wordToGuess, String attempt) {
 
@@ -78,10 +95,6 @@ public class Round {
 
     public List<Feedback> getFeedbacks() {
         return feedbacks;
-    }
-
-    public GameStatus getGameState() {
-        return gameState;
     }
 
     public int getAttemptsLeft() {

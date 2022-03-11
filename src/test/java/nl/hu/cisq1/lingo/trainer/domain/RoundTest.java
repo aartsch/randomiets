@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
+import nl.hu.cisq1.lingo.words.domain.Word;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -61,10 +62,25 @@ class RoundTest {
     }
 
     @Test
-    @DisplayName("Check if the gamestate is correct per round")
-    void checkGameState() {
+    @DisplayName("check if the word is guessed")
+    void isWordGuessed() {
         String wordToGuess = "groep";
-        String attempt = "groes";
+        String attempt = "groep";
+
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+
+        boolean wordGuessed =  round.isWordGuessed();
+
+        assertEquals(true, wordGuessed);
+    }
+
+    @Test
+    @DisplayName("check if the round is over")
+    void isRoundOver() {
+        String wordToGuess = "groep";
+        String attempt = "groek";
 
         Round round = new Round(wordToGuess, 5 );
 
@@ -74,9 +90,42 @@ class RoundTest {
         round.guessWord(attempt);
         round.guessWord(attempt);
 
-        GameStatus result = round.getGameState();
+        boolean roundOver =  round.isGameOver();
 
-        assertEquals(GameStatus.LOST, result);
+        assertEquals(true, roundOver);
     }
 
-}
+    @Test
+    @DisplayName("attempts left based on amount of times guessed")
+    void attemptsBasedOnGuesses() {
+        String wordToGuess = "groep";
+        String attempt = "groek";
+
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+        round.guessWord(attempt);
+        round.guessWord(attempt);
+
+        int attemptsLeft = round.getAttemptsLeft();
+
+        assertEquals(2, attemptsLeft);
+    }
+
+    @Test
+    @DisplayName("check if size of feedback equal to attemptsleft")
+    void compareFeedbackToAttemptsLeft() {
+        String wordToGuess = "groep";
+        String attempt = "groek";
+
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+        round.guessWord(attempt);
+
+        int attemptsLeft = round.getAttemptsLeft();
+        List<Feedback> feedbacks = round.getFeedbacks();
+
+        assertEquals(attemptsLeft, 5 - feedbacks.size());
+    }
+ }
