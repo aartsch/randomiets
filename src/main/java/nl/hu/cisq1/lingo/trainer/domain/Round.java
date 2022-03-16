@@ -100,4 +100,8 @@ public class Round {
     public int getAttemptsLeft() {
         return attemptsLeft;
     }
+
+    public String getWordToGuess() {
+        return wordToGuess;
+    }
 }

@@ -26,7 +26,7 @@ public class Game {
     }
 
 
-    private void guess(String attempt, String wordToGuess) {
+    public void guess(String attempt) {
         Round lastRound = getLastRound();
 
         lastRound.guessWord(attempt);
@@ -39,14 +39,17 @@ public class Game {
         }
     }
 
-    public void calculateScore(Round round) {
-        this.score = this.score + 5*round.getAttemptsLeft()+5;
-    }
 
-    private Round getLastRound() {
+    // was eerst private maar is nodig in TrainerService
+    public Round getLastRound() {
         Round last = rounds.get(rounds.size()-1);
 
         return last;
     }
+
+    private void calculateScore(Round round) {
+        this.score = this.score + 5*round.getAttemptsLeft()+5;
+    }
+
 
 }
