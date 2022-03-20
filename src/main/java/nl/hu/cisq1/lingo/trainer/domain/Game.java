@@ -51,5 +51,19 @@ public class Game {
         this.score = this.score + 5*round.getAttemptsLeft()+5;
     }
 
+    public long getId() {
+        return id;
+    }
 
+    public int getScore() {
+        return score;
+    }
+
+    public GameStatus getGameState() {
+        return gameState;
+    }
+
+    public List<Round> getRounds() {
+        return rounds;
+    }
 }

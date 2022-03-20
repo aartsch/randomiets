@@ -4,6 +4,7 @@ package nl.hu.cisq1.lingo.trainer.application;
 import nl.hu.cisq1.lingo.trainer.data.GameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
 import nl.hu.cisq1.lingo.trainer.domain.Round;
+import nl.hu.cisq1.lingo.trainer.presentation.GameData;
 import nl.hu.cisq1.lingo.words.application.WordService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,7 @@ public class TrainerService {
         this.wordService = wordService;
     }
 
-    public void startGame() {
+    public GameData startGame() {
         Game game = new Game();
 
         String wordToGuess = this.wordService.provideRandomWord(5);
@@ -27,15 +28,31 @@ public class TrainerService {
         game.startGame(wordToGuess);
 
         this.gameRepository.save(game);
+
+        return new GameData(
+                game.getId(),
+                game.getGameState(),
+                game.getScore(),
+                game.getLastRound().getAttemptsLeft(),
+                game.getLastRound().getHint()
+        );
     }
 
-    public void guess(long id, String attempt) {
+    public GameData guess(long id, String attempt) {
         Game game = gameRepository.findById(id);
 
         game.guess(attempt);
+
+        return new GameData(
+                game.getId(),
+                game.getGameState(),
+                game.getScore(),
+                game.getLastRound().getAttemptsLeft(),
+                game.getLastRound().getHint()
+        );
     }
 
-    public void startNewRound(long id) {
+    public GameData startNewRound(long id) {
         Game game = gameRepository.findById(id);
 
         int previousWordToGuessLenght = game.getLastRound().getWordToGuess().length();
@@ -47,5 +64,13 @@ public class TrainerService {
             String wordToGuess = this.wordService.provideRandomWord(5);
             game.startNewRound(wordToGuess);
         }
+
+        return new GameData(
+                game.getId(),
+                game.getGameState(),
+                game.getScore(),
+                game.getLastRound().getAttemptsLeft(),
+                game.getLastRound().getHint()
+        );
     }
 }
