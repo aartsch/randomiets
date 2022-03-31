@@ -1,13 +1,18 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Round {
+    @Id
+    @GeneratedValue
     private long id;
     private String wordToGuess;
     private int attemptsLeft;
     private String hint;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Feedback> feedbacks = new ArrayList<>();
 
     public Round(String wordToGuess, int attemptsLeft) {
@@ -16,13 +21,16 @@ public class Round {
         this.hint = this.giveInitialHint(wordToGuess);
     }
 
+    public Round() {
+    }
+
     public void guessWord(String attempt) {
         // everything with gameState should be moved to the Game class
         List<Mark> marks = generateMarks(this.wordToGuess, attempt);
 
         Feedback feedback = new Feedback(attempt, marks);
 
-        this.feedbacks.add(feedback);
+        feedbacks.add(feedback);
 
         if(feedback.isAttemptInvalid()) {
             Feedback.invalid(attempt, this.wordToGuess);

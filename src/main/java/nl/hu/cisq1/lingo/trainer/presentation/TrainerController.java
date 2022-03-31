@@ -2,7 +2,12 @@ package nl.hu.cisq1.lingo.trainer.presentation;
 
 
 import nl.hu.cisq1.lingo.trainer.application.TrainerService;
+import nl.hu.cisq1.lingo.trainer.domain.exceptions.ActionNotAllowedException;
+import nl.hu.cisq1.lingo.trainer.domain.exceptions.GameNotFoundException;
+import nl.hu.cisq1.lingo.trainer.domain.exceptions.WordDoesNotExistException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/lingo")
@@ -15,18 +20,33 @@ public class TrainerController {
 
     @PostMapping("/game")
     public GameData StartGame() {
-            GameData gameData = this.service.startGame();
-            return gameData;
+        try {
+            return this.service.startGame();
+        } catch (ActionNotAllowedException actionNotAllowed) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/game/{id}")
     public GameData guess(@PathVariable int id, @RequestBody String attempt) {
-        return this.service.guess(id, attempt);
+        try {
+            return this.service.guess(id, attempt);
+        } catch (ActionNotAllowedException | WordDoesNotExistException actionNotAllowed) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (GameNotFoundException gameNotFound) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PostMapping("/game/{id}")
+    @PostMapping("/game/round/{id}")
     public GameData startNewRound(@PathVariable int id) {
-        return this.service.startNewRound(id);
+        try {
+            return this.service.startNewRound(id);
+        } catch (ActionNotAllowedException actionNotAllowed) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (GameNotFoundException gameNotFound) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

@@ -2,18 +2,27 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import org.hibernate.validator.internal.constraintvalidators.hv.ru.INNValidator;
 
+import javax.persistence.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-
+@Entity
 public class Feedback {
+    @Id
+    @GeneratedValue
+    private long id;
     private String attempt;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Mark> marks;
 
     public Feedback(String attempt, List<Mark> marks) {
         this.attempt = attempt;
         this.marks = marks;
+    }
+
+    public Feedback() {
+
     }
 
     public static Feedback invalid(String attempt, String wordToGuess) {

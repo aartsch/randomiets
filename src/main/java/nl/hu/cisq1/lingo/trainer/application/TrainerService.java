@@ -4,6 +4,8 @@ package nl.hu.cisq1.lingo.trainer.application;
 import nl.hu.cisq1.lingo.trainer.data.GameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
 import nl.hu.cisq1.lingo.trainer.domain.Round;
+import nl.hu.cisq1.lingo.trainer.domain.exceptions.GameNotFoundException;
+import nl.hu.cisq1.lingo.trainer.domain.exceptions.WordDoesNotExistException;
 import nl.hu.cisq1.lingo.trainer.presentation.GameData;
 import nl.hu.cisq1.lingo.words.application.WordService;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,6 @@ public class TrainerService {
         game.startGame(wordToGuess);
 
         this.gameRepository.save(game);
-
         return new GameData(
                 game.getId(),
                 game.getGameState(),
@@ -39,9 +40,15 @@ public class TrainerService {
     }
 
     public GameData guess(long id, String attempt) {
-        Game game = gameRepository.findById(id);
+        Game game = this.findGameById(id);
 
         game.guess(attempt);
+
+        this.gameRepository.save(game);
+
+        if(!this.wordService.wordExists(attempt)) {
+            throw new WordDoesNotExistException("word does not exist");
+        }
 
         return new GameData(
                 game.getId(),
@@ -53,7 +60,7 @@ public class TrainerService {
     }
 
     public GameData startNewRound(long id) {
-        Game game = gameRepository.findById(id);
+        Game game = this.findGameById(id);
 
         int previousWordToGuessLenght = game.getLastRound().getWordToGuess().length();
 
@@ -72,5 +79,11 @@ public class TrainerService {
                 game.getLastRound().getAttemptsLeft(),
                 game.getLastRound().getHint()
         );
+    }
+
+    private Game findGameById(long id) {
+        return this.gameRepository
+                .findById(id)
+                .orElseThrow(() -> new GameNotFoundException("game met id " + id + " niet gevonden."));
     }
 }
