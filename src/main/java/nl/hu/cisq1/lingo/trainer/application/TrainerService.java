@@ -8,6 +8,7 @@ import nl.hu.cisq1.lingo.trainer.domain.exceptions.GameNotFoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.WordDoesNotExistException;
 import nl.hu.cisq1.lingo.trainer.presentation.GameData;
 import nl.hu.cisq1.lingo.words.application.WordService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TrainerService {
     private final GameRepository gameRepository;
-    private WordService wordService;
+    private final WordService wordService;
 
     public TrainerService(GameRepository gameRepository, WordService wordService) {
         this.gameRepository = gameRepository;
@@ -23,13 +24,12 @@ public class TrainerService {
     }
 
     public GameData startGame() {
-        Game game = new Game();
-
         String wordToGuess = this.wordService.provideRandomWord(5);
 
+        Game game = new Game();
         game.startGame(wordToGuess);
-
         this.gameRepository.save(game);
+
         return new GameData(
                 game.getId(),
                 game.getGameState(),

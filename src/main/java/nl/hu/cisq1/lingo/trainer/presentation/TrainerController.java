@@ -6,8 +6,11 @@ import nl.hu.cisq1.lingo.trainer.domain.exceptions.ActionNotAllowedException;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.GameNotFoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.WordDoesNotExistException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.awt.*;
 
 @RestController
 @RequestMapping("/lingo")
@@ -18,17 +21,13 @@ public class TrainerController {
         this.service = service;
     }
 
-    @PostMapping("/game")
+    @PostMapping(path = "/game")
     public GameData StartGame() {
-        try {
-            return this.service.startGame();
-        } catch (ActionNotAllowedException actionNotAllowed) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        return this.service.startGame();
     }
 
     @PostMapping("/game/{id}")
-    public GameData guess(@PathVariable int id, @RequestBody String attempt) {
+    public GameData guess(@PathVariable int id, @RequestParam String attempt) {
         try {
             return this.service.guess(id, attempt);
         } catch (ActionNotAllowedException | WordDoesNotExistException actionNotAllowed) {
