@@ -73,7 +73,22 @@ class RoundTest {
 
         boolean wordGuessed =  round.isWordGuessed();
 
-        assertEquals(true, wordGuessed);
+        assertTrue(wordGuessed);
+    }
+
+    @Test
+    @DisplayName("check if the word is not guessed")
+    void isWordNotGuessed() {
+        String wordToGuess = "groep";
+        String attempt = "graag";
+
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+
+        boolean wordGuessed =  round.isWordGuessed();
+
+        assertFalse(wordGuessed);
     }
 
     @Test
@@ -92,7 +107,23 @@ class RoundTest {
 
         boolean roundOver =  round.isGameOver();
 
-        assertEquals(true, roundOver);
+        assertTrue(roundOver);
+    }
+
+    @Test
+    @DisplayName("check if the round is not over")
+    void isRoundNotOver() {
+        String wordToGuess = "groep";
+        String attempt = "groek";
+
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+
+
+        boolean roundNotOver =  !round.isGameOver();
+
+        assertTrue(roundNotOver);
     }
 
     @Test
@@ -126,6 +157,39 @@ class RoundTest {
         int attemptsLeft = round.getAttemptsLeft();
         List<Feedback> feedbacks = round.getFeedbacks();
 
-        assertEquals(attemptsLeft, 5 - feedbacks.size());
+        assertEquals(5 - feedbacks.size(), attemptsLeft);
     }
- }
+
+    @Test
+    @DisplayName("Does the attemptsleft go down if the feedback is invalid")
+    void checkIfFeedbackIsInvalidAffectsAttempts() {
+        String wordToGuess = "groep";
+        String attempt = "groekss";
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+
+        int attemptsLeft = round.getAttemptsLeft();
+
+        assertEquals(4, attemptsLeft);
+    }
+
+    @Test
+    @DisplayName("Does the attemptsleft go down if the feedback is invalid")
+    void checkIfFeedbackIsInvalid() {
+        String wordToGuess = "groep";
+        String attempt = "groeksiii";
+        Round round = new Round(wordToGuess, 5 );
+
+        round.guessWord(attempt);
+
+        Feedback feedback = round.lastFeedback();
+
+
+        Feedback expectedFeedback = new Feedback(attempt, (List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID)));
+
+
+        assertEquals(expectedFeedback.getMarks(), feedback.getMarks());
+    }
+
+}

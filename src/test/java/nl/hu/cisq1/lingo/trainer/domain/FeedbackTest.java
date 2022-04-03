@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,7 +36,7 @@ class FeedbackTest {
 
         Feedback feedback = new Feedback(attempt, marks );
 
-        assertTrue(!feedback.isWordGuessed());
+        assertFalse(feedback.isWordGuessed());
     }
 
     @Test
@@ -47,6 +48,18 @@ class FeedbackTest {
         Feedback feedback = Feedback.invalid(attempt, wordToGuess);
 
         assertTrue(feedback.isAttemptInvalid());
+    }
+
+    @Test
+    @DisplayName("attempt is not invalid if none of the marks equal invalid")
+    void attemptIsNotInvalid() {
+        String attempt = "groep";
+
+        List<Mark> marks = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.ABSENT);
+
+        Feedback feedback = new Feedback(attempt, marks);
+
+        assertFalse(feedback.isAttemptInvalid());
     }
 
     @ParameterizedTest
@@ -97,6 +110,11 @@ class FeedbackTest {
         Map<Feedback, String> map = new HashMap<>();
         map.put(feedback1, "feedback");
         assertEquals("feedback", map.get(feedback2));
+    }
+
+    @Test
+    public void simpleEqualsContract() {
+        EqualsVerifier.simple().forClass(Feedback.class).verify();
     }
 
 }

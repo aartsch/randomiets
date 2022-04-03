@@ -36,8 +36,7 @@ public class Feedback {
     }
 
     public boolean isAttemptInvalid() {
-        return marks
-                .stream()
+        return marks.stream()
                 .anyMatch(Mark.INVALID::equals);
     }
 
@@ -70,7 +69,11 @@ public class Feedback {
 //    }
 
 
-        @Override
+    public List<Mark> getMarks() {
+        return marks;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -82,4 +85,6 @@ public class Feedback {
     public int hashCode() {
         return Objects.hash(attempt, marks);
     }
+
+
 }

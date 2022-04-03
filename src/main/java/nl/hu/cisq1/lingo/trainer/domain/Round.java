@@ -32,8 +32,10 @@ public class Round {
 
         feedbacks.add(feedback);
 
-        if(feedback.isAttemptInvalid()) {
-            Feedback.invalid(attempt, this.wordToGuess);
+        // could change the condition in the if statement to private method
+        if(attempt.length() > this.wordToGuess.length()) {
+            Feedback invalidFeedback = Feedback.invalid(attempt, this.wordToGuess);
+            feedbacks.set(feedbacks.size()-1, invalidFeedback);
             this.attemptsLeft = this.attemptsLeft -1;
         } else if (feedback.isWordGuessed()){
 
@@ -59,7 +61,7 @@ public class Round {
         return (!isWordGuessed() && this.attemptsLeft == 0);
     }
 
-    private Feedback lastFeedback() {
+    public Feedback lastFeedback() {
         Feedback feedback = feedbacks.get(feedbacks.size()-1);
 
         return feedback;
@@ -96,6 +98,7 @@ public class Round {
 
         return result.toString();
     }
+
 
     public String getHint() {
         return hint;
