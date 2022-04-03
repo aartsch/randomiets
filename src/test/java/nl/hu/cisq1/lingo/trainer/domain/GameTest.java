@@ -3,11 +3,15 @@ package nl.hu.cisq1.lingo.trainer.domain;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.ActionNotAllowedException;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -101,7 +105,41 @@ class GameTest {
         assertEquals(GameStatus.LOST, game.getGameState());
     }
 
+    @ParameterizedTest
+    @DisplayName("Does calculate score return the right score")
+    @MethodSource("scoreSamples")
+    void calculateScore(Round round, int expectedScore) {
+        Game game1 = new Game(0,0, GameStatus.PLAYING, null);
 
+        game1.calculateScore(round);
+
+        assertEquals(expectedScore, game1.getScore());
+    }
+
+    static Stream<Arguments> scoreSamples() {
+        return Stream.of(
+                Arguments.of(new Round("groep", 5), 30),
+                Arguments.of(new Round("groep", 4),25),
+                Arguments.of(new Round("groep", 3),20),
+                Arguments.of(new Round("groep", 2),15),
+                Arguments.of(new Round("groep", 1),10)
+        );
+    }
+
+    @Test
+    @DisplayName("does score go up when word is guessed correctly")
+    void scoreAfterCorrectGuess() {
+        List<Round> rounds = new ArrayList<>();
+
+        Round round = new Round("groep", 5);
+        rounds.add(round);
+
+        Game game1 = new Game(0,0, GameStatus.PLAYING, rounds);
+
+        game1.guess("groep");
+
+        assertEquals(30 , game1.getScore() );
+    }
 
     @Test
     @DisplayName("game is equal to another game")
@@ -109,8 +147,9 @@ class GameTest {
         List<Round> rounds = new ArrayList<>();
 
         Round round = new Round("groep",5);
+        Round round2 = new Round("groek" ,5);
         rounds.add(round);
-
+        rounds.add(round2);
 
         Game game1 = new Game(0,0, GameStatus.PLAYING, rounds );
         Game game2= new Game(0,0, GameStatus.PLAYING, rounds );
@@ -128,8 +167,8 @@ class GameTest {
         rounds.add(round);
 
 
-        Game game1 = new Game(0,0, GameStatus.PLAYING, rounds );
-        Game game2= new Game(0,0, GameStatus.PLAYING, rounds );
+        Game game1 = new Game(0,0, GameStatus.PLAYING, rounds);
+        Game game2= new Game(0,0, GameStatus.PLAYING, rounds);
 
         Map<Game, String> map = new HashMap<>();
         map.put(game1, "game");
@@ -138,7 +177,7 @@ class GameTest {
 
     @Test
     public void simpleEqualsContract() {
-        EqualsVerifier.simple().forClass(Feedback.class).verify();
+        EqualsVerifier.simple().forClass(Game.class).verify();
     }
 
     @BeforeAll

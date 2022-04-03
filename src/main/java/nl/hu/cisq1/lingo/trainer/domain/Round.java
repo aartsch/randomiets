@@ -16,6 +16,13 @@ public class Round {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Feedback> feedbacks = new ArrayList<>();
 
+    public Round(String wordToGuess, int attemptsLeft, String hint, List<Feedback> feedbacks) {
+        this.wordToGuess = wordToGuess;
+        this.attemptsLeft = attemptsLeft;
+        this.hint = hint;
+        this.feedbacks = feedbacks;
+    }
+
     public Round(String wordToGuess, int attemptsLeft) {
         this.wordToGuess = wordToGuess;
         this.attemptsLeft = attemptsLeft;
@@ -105,12 +112,12 @@ public class Round {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Round round = (Round) o;
-        return attemptsLeft == round.attemptsLeft && Objects.equals(wordToGuess, round.wordToGuess);
+        return attemptsLeft == round.attemptsLeft && Objects.equals(wordToGuess, round.wordToGuess) && Objects.equals(hint, round.hint) && Objects.equals(feedbacks, round.feedbacks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wordToGuess, attemptsLeft);
+        return Objects.hash(wordToGuess, attemptsLeft, hint, feedbacks);
     }
 
     public String getHint() {

@@ -199,18 +199,35 @@ class RoundTest {
     @Test
     @DisplayName("game is equal to another game")
     void equals() {
-        Round round1 = new Round("groep",5);
-        Round round2 = new Round("groep",5);
+        String attempt = "woord";
+
+        List<Mark> marks1 = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT);
+
+        Feedback feedback1  = new Feedback(attempt, marks1 );
+
+        List<Feedback> feedbacks = new ArrayList<>();
+        feedbacks.add(feedback1);
+
+        Round round1 = new Round("groep",5, "g....", feedbacks );
+        Round round2 = new Round("groep",5, "g....", feedbacks);
 
         assertEquals(round1, round2);
     }
 
-
     @Test
     @DisplayName("hashcode is equal to another hashcode")
     void testHashCode() {
-        Round round1 = new Round("groep",5);
-        Round round2 = new Round("groep",5);
+        String attempt = "woord";
+
+        List<Mark> marks1 = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT);
+
+        Feedback feedback1  = new Feedback(attempt, marks1 );
+
+        List<Feedback> feedbacks = new ArrayList<>();
+        feedbacks.add(feedback1);
+
+        Round round1 = new Round("groep",5, "g....", feedbacks );
+        Round round2 = new Round("groep",5, "g....", feedbacks);
 
         Map<Round, String> map = new HashMap<>();
         map.put(round1, "round");
@@ -219,7 +236,7 @@ class RoundTest {
 
     @Test
     public void simpleEqualsContract() {
-        EqualsVerifier.simple().forClass(Feedback.class).verify();
+        EqualsVerifier.simple().forClass(Round.class).verify();
     }
 
 }

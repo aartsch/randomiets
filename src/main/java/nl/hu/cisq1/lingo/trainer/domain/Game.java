@@ -75,15 +75,15 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return id == game.id && score == game.score && gameState == game.gameState && Objects.equals(rounds, game.rounds);
+        return score == game.score && gameState == game.gameState && Objects.equals(rounds, game.rounds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, score, gameState, rounds);
+        return Objects.hash(score, gameState, rounds);
     }
 
-    private void calculateScore(Round round) {
+    void calculateScore(Round round) {
         this.score = this.score + 5*round.getAttemptsLeft()+5;
     }
 

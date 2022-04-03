@@ -57,16 +57,6 @@ public class Feedback {
         return result.toString();
     }
 
-//    public String baseHint(String wordToGuess) {
-//        StringBuilder result = new StringBuilder();
-//
-//        result.append(wordToGuess.charAt(0));
-//        for (int i = 1; i < wordToGuess.length(); i++) {
-//            result.append(".");
-//        }
-//
-//        return result.toString();
-//    }
 
 
     public List<Mark> getMarks() {
