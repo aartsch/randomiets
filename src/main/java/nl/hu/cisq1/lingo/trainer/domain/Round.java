@@ -1,5 +1,7 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,9 @@ public class Round {
     private String wordToGuess;
     private int attemptsLeft;
     private String hint;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany()
+    @JoinColumn
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Feedback> feedbacks = new ArrayList<>();
 
     public Round(String wordToGuess, int attemptsLeft, String hint, List<Feedback> feedbacks) {

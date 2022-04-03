@@ -120,12 +120,11 @@ class TrainerServiceIntegrationTest {
 
         GameData progressData = trainerService.getProgress(startedGameData.getId());
 
-        GameData gameData = trainerService.startGame();
 
-        assertEquals(GameStatus.PLAYING, gameData.getStatus());
-        assertEquals(0, gameData.getScore());
-        assertEquals(5, gameData.getHint().length());
-        assertEquals(5, gameData.getAttemptsLeft());
+        assertEquals(GameStatus.PLAYING, progressData.getStatus());
+        assertEquals(0, progressData.getScore());
+        assertEquals(5, progressData.getHint().length());
+        assertEquals(5, progressData.getAttemptsLeft());
     }
 
 
