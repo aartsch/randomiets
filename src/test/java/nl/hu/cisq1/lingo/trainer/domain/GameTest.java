@@ -35,6 +35,21 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("Able to start a new round when gamestate is equal to roundwon")
+    void succesfullyStartingNewRound() {
+        game.startGame("groep");
+
+        game.guess("groep");
+
+        game.startNewRound("hater");
+
+        Round round = game.getLastRound();
+        Round expectedRound = new Round("hater", 5);
+
+        assertEquals(expectedRound.getWordToGuess(), round.getWordToGuess());
+    }
+
+    @Test
     @DisplayName("game throws an exception if a new round cant get started")
     void startingNewRoundIsNotAllowed() {
         Exception exception = assertThrows(ActionNotAllowedException.class, () -> {
@@ -86,6 +101,8 @@ class GameTest {
         assertEquals(GameStatus.LOST, game.getGameState());
     }
 
+
+
     @Test
     @DisplayName("game is equal to another game")
     void equals() {
@@ -97,6 +114,8 @@ class GameTest {
 
         Game game1 = new Game(0,0, GameStatus.PLAYING, rounds );
         Game game2= new Game(0,0, GameStatus.PLAYING, rounds );
+
+        assertEquals(game1, game2);
     }
 
 
@@ -113,8 +132,8 @@ class GameTest {
         Game game2= new Game(0,0, GameStatus.PLAYING, rounds );
 
         Map<Game, String> map = new HashMap<>();
-        map.put(game1, "feedback");
-        assertEquals("feedback", map.get(game2));
+        map.put(game1, "game");
+        assertEquals("game", map.get(game2));
     }
 
     @Test

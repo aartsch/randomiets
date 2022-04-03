@@ -3,6 +3,7 @@ package nl.hu.cisq1.lingo.trainer.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Round {
@@ -99,6 +100,18 @@ public class Round {
         return result.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Round round = (Round) o;
+        return attemptsLeft == round.attemptsLeft && Objects.equals(wordToGuess, round.wordToGuess);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(wordToGuess, attemptsLeft);
+    }
 
     public String getHint() {
         return hint;

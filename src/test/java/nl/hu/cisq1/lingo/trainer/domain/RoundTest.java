@@ -1,13 +1,17 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import nl.hu.cisq1.lingo.words.domain.Word;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -190,6 +194,32 @@ class RoundTest {
 
 
         assertEquals(expectedFeedback.getMarks(), feedback.getMarks());
+    }
+
+    @Test
+    @DisplayName("game is equal to another game")
+    void equals() {
+        Round round1 = new Round("groep",5);
+        Round round2 = new Round("groep",5);
+
+        assertEquals(round1, round2);
+    }
+
+
+    @Test
+    @DisplayName("hashcode is equal to another hashcode")
+    void testHashCode() {
+        Round round1 = new Round("groep",5);
+        Round round2 = new Round("groep",5);
+
+        Map<Round, String> map = new HashMap<>();
+        map.put(round1, "round");
+        assertEquals("round", map.get(round2));
+    }
+
+    @Test
+    public void simpleEqualsContract() {
+        EqualsVerifier.simple().forClass(Feedback.class).verify();
     }
 
 }
