@@ -1,6 +1,13 @@
 package nl.hu.cisq1.lingo.trainer.presentation;
 
+import nl.hu.cisq1.lingo.trainer.data.GameRepository;
+import nl.hu.cisq1.lingo.trainer.domain.Game;
+import nl.hu.cisq1.lingo.trainer.domain.GameStatus;
+import nl.hu.cisq1.lingo.trainer.domain.Round;
 import nl.hu.cisq1.lingo.words.application.WordService;
+import nl.hu.cisq1.lingo.words.domain.Word;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.OngoingStubbing;
@@ -12,6 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -22,12 +32,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class TrainerControllerTest {
+    private static List<Round> rounds = new ArrayList<>();
+    private static Game game = new Game(0, 0, GameStatus.PLAYING, rounds);
+    private static long id = 100;
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private WordService wordService;
+
+    @Autowired
+    private GameRepository repository;
 
     @Test
     @DisplayName("start a new game")
@@ -48,7 +64,50 @@ class TrainerControllerTest {
                 .andExpect(jsonPath("$.attemptsLeft", is(5)));
     }
 
+//    @Test
+//    @DisplayName("guess a word succesfully")
+//    void guessCorrectWord() throws Exception {
+//        when(wordService.provideRandomWord(5))
+//                .thenReturn("groep");
+//
+//        game.getRounds().add(new Round(wordService.provideRandomWord(5), 5));
+//
+//        RequestBuilder request = MockMvcRequestBuilders
+//                .post("/lingo/game/100")
+//                .param("attempt", "groep");
+//
+//        mockMvc.perform(request)
+//                .andExpect(status().isOk());
+//    }
 
+    @Test
+    @DisplayName("Cant start a new round if game is not started")
+    void startNewRoundGameNotFoundException() throws Exception {
+        when(wordService.provideRandomWord(5))
+                .thenReturn("groep");
+
+        game.getRounds().add(new Round(wordService.provideRandomWord(5), 5));
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/lingo/game/round/0");
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+//    @BeforeEach
+//    void loadTestData() {
+//        // Load test fixtures into test database before each test case
+//        repository.deleteAll();
+//        repository.save(new Game(id,0 , GameStatus.PLAYING,rounds ));
+//    }
+//
+//    @AfterEach
+//    void clearTestData() {
+//        // Remove test fixtures from test database after each test case
+//        repository.deleteAll();
+//    }
+}
 //    @Test
 //    @DisplayName("guess the word")
 //    void guessWord() throws Exception {
@@ -57,10 +116,10 @@ class TrainerControllerTest {
 //
 //        RequestBuilder request = MockMvcRequestBuilders
 //                .post("/lingo/game/{0}")
-//                .param("attempt", "groep");
+//
 //
 //        mockMvc.perform(request)
 //                .andExpect(jsonPath("$.status", is("PLAYING")));
 //
 //    }
-}
+
