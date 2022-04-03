@@ -3,12 +3,10 @@ package nl.hu.cisq1.lingo.trainer.application;
 
 import nl.hu.cisq1.lingo.trainer.data.GameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
-import nl.hu.cisq1.lingo.trainer.domain.Round;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.GameNotFoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.WordDoesNotExistException;
 import nl.hu.cisq1.lingo.trainer.presentation.GameData;
 import nl.hu.cisq1.lingo.words.application.WordService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

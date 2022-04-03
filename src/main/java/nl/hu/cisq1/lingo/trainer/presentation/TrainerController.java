@@ -6,11 +6,9 @@ import nl.hu.cisq1.lingo.trainer.domain.exceptions.ActionNotAllowedException;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.GameNotFoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exceptions.WordDoesNotExistException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.awt.*;
 
 @RestController
 @RequestMapping("/lingo")

@@ -64,22 +64,6 @@ class TrainerControllerTest {
                 .andExpect(jsonPath("$.attemptsLeft", is(5)));
     }
 
-//    @Test
-//    @DisplayName("guess a word succesfully")
-//    void guessCorrectWord() throws Exception {
-//        when(wordService.provideRandomWord(5))
-//                .thenReturn("groep");
-//
-//        game.getRounds().add(new Round(wordService.provideRandomWord(5), 5));
-//
-//        RequestBuilder request = MockMvcRequestBuilders
-//                .post("/lingo/game/100")
-//                .param("attempt", "groep");
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isOk());
-//    }
-
     @Test
     @DisplayName("Cant start a new round if game is not started")
     void startNewRoundGameNotFoundException() throws Exception {
@@ -94,32 +78,6 @@ class TrainerControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isNotFound());
     }
-
-//    @BeforeEach
-//    void loadTestData() {
-//        // Load test fixtures into test database before each test case
-//        repository.deleteAll();
-//        repository.save(new Game(id,0 , GameStatus.PLAYING,rounds ));
-//    }
-//
-//    @AfterEach
-//    void clearTestData() {
-//        // Remove test fixtures from test database after each test case
-//        repository.deleteAll();
-//    }
 }
-//    @Test
-//    @DisplayName("guess the word")
-//    void guessWord() throws Exception {
-//        when(wordService.provideRandomWord(5))
-//                .thenReturn("groep");
-//
-//        RequestBuilder request = MockMvcRequestBuilders
-//                .post("/lingo/game/{0}")
-//
-//
-//        mockMvc.perform(request)
-//                .andExpect(jsonPath("$.status", is("PLAYING")));
-//
-//    }
+
 

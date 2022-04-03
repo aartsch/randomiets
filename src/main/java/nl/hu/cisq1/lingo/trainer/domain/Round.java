@@ -40,7 +40,6 @@ public class Round {
 
         feedbacks.add(feedback);
 
-        // could change the condition in the if statement to private method
         if(attempt.length() > this.wordToGuess.length()) {
             Feedback invalidFeedback = Feedback.invalid(attempt, this.wordToGuess);
             feedbacks.set(feedbacks.size()-1, invalidFeedback);
