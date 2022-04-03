@@ -46,4 +46,14 @@ public class TrainerController {
         }
     }
 
+    @GetMapping("/game/{id}")
+    public GameData getProgress(@PathVariable int id) {
+        try {
+            return this.service.getProgress(id);
+        } catch (GameNotFoundException gameNotFound) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 }

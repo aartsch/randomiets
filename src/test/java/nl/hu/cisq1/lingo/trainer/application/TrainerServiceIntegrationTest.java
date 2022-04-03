@@ -114,6 +114,22 @@ class TrainerServiceIntegrationTest {
         assertEquals(5, gameData.getAttemptsLeft());
     }
 
+    @Test
+    @DisplayName("Requesting the gameprogress returns the correct gamedata")
+    void getProgress() {
+        GameData startedGameData = trainerService.startGame();
+
+        GameData progressData = trainerService.getProgress(startedGameData.getId());
+
+        GameData gameData = trainerService.startGame();
+
+        assertEquals(GameStatus.PLAYING, gameData.getStatus());
+        assertEquals(0, gameData.getScore());
+        assertEquals(5, gameData.getHint().length());
+        assertEquals(5, gameData.getAttemptsLeft());
+    }
+
+
 
 
     @BeforeEach

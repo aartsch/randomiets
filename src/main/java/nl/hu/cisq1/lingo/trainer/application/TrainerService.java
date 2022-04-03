@@ -79,6 +79,19 @@ public class TrainerService {
         );
     }
 
+    public GameData getProgress(long id) {
+        Game game = this.findGameById(id);
+
+        return new GameData(
+                game.getId(),
+                game.getGameState(),
+                game.getScore(),
+                game.getLastRound().getAttemptsLeft(),
+                game.getLastRound().getHint()
+        );
+    }
+
+
     private Game findGameById(long id) {
         return this.gameRepository
                 .findById(id)

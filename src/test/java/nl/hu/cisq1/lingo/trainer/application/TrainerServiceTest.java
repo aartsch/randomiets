@@ -95,6 +95,10 @@ class TrainerServiceTest {
                 GameNotFoundException.class,
                 () -> trainerService.startNewRound(id)
         );
+        assertThrows(
+                GameNotFoundException.class,
+                () -> trainerService.getProgress(id)
+        );
 
     }
 

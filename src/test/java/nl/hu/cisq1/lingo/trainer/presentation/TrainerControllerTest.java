@@ -78,6 +78,21 @@ class TrainerControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    @DisplayName("Cant ask game progress if the game doesnt exist")
+    void getProgressGameNotFound() throws Exception {
+        when(wordService.provideRandomWord(5))
+                .thenReturn("groep");
+
+        game.getRounds().add(new Round(wordService.provideRandomWord(5), 5));
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/lingo/game/0");
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
 }
 
 
