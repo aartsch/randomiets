@@ -36,7 +36,6 @@ class TrainerServiceIntegrationTest {
     @Autowired
     private WordRepository wordRepository;
 
-    //TODO fix that word with length of 5 can not be found
     @Test
     @DisplayName("Starting a new game starts a new round")
     void startNewGame() {
