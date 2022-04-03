@@ -31,6 +31,7 @@ class WordControllerIntegrationTest {
     @Autowired
     private WordRepository repository;
 
+
     @Test
     @DisplayName("only supports 5, 6 and 7 letter words")
     void notSupportedWordLength() throws Exception {

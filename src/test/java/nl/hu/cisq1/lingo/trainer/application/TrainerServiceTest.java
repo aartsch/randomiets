@@ -49,6 +49,7 @@ class TrainerServiceTest {
         assertEquals("g....", gameData.getHint());
         assertEquals(0, gameData.getId());
         assertEquals(GameStatus.PLAYING, gameData.getStatus());
+        assertEquals(0, gameData.getScore());
     }
 
     @Test
