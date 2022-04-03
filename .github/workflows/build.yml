@@ -21,7 +21,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{Aart Schouten lingo}}-reports
+          name: ${{Aart_Schouten_lingo}}-reports
           path: |
             target/site/jacoco/
             target/pit-reports/
