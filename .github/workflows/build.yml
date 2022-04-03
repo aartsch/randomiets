@@ -13,5 +13,14 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify "-Dspring.profiles.active=ci"
+      - name: Build and test
+        run: mvn -B verify -Dspring.profiles.active=ci pitest:mutationCoverage
+      - name: Save repository name
+        run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+        shell: bash
+            - uses: actions/upload-artifact@v2
+              with:
+                name: ${{Aart Schouten lingo}}-reports
+                path: |
+                  target/site/jacoco/
+                  target/pit-reports/
