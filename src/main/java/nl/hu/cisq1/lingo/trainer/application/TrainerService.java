@@ -98,3 +98,5 @@ public class TrainerService {
                 .orElseThrow(() -> new GameNotFoundException("game met id " + id + " niet gevonden."));
     }
 }
+
+
